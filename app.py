@@ -6,14 +6,27 @@ cve_items = load_cve_data()
 
 @app.route('/api/cves', methods=['GET'])
 def get_all_cves():
-    return jsonify([item['cve']['CVE_data_meta']['ID'] for item in cve_items])
+    cves = [
+        {
+            'id': item['cve']['CVE_data_meta']['ID'],
+            'baseScore': item.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseScore'),
+            'exploitabilityScore': item.get('impact', {}).get('baseMetricV3', {}).get('exploitabilityScore'),
+            'impactScore': item.get('impact', {}).get('baseMetricV3', {}).get('impactScore'),
+            'attackVector': item.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('attackVector')
+        }
+        for item in cve_items
+        if item.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseScore') is not None
+        and item.get('impact', {}).get('baseMetricV3', {}).get('exploitabilityScore') is not None
+        and item.get('impact', {}).get('baseMetricV3', {}).get('impactScore') is not None
+        and item.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('attackVector') is not None
+    ]
+    return jsonify(cves)
 
 @app.route('/api/base-scores', methods=['GET'])
 def get_base_scores():
     base_scores = [
         {
             'id': item['cve']['CVE_data_meta']['ID'],
-            'baseScore': item.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseScore')
         }
         for item in cve_items
         if item.get('impact', {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseScore') is not None

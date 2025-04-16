@@ -58,11 +58,5 @@ Returns a list of CVE IDs and their impact scores.
 
 Returns a list of CVE IDs and their attack vectors.
 
-## Notes
 
-- Make sure the JSON file is up to date. You can get the latest from: https://nvd.nist.gov/vuln/data-feeds
-- This is meant for local or dev use, but you can easily extend it with filters or deployment support if needed.
-```
-
----
 
