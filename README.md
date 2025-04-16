@@ -15,7 +15,7 @@ This is a simple Flask-based API that serves CVE data from a local `nvdcve-1.1-r
 
 Install Flask using pip:
 
-```bash
+
 pip install flask
 ```
 
